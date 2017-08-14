@@ -6,17 +6,17 @@ class PagesController < ApplicationController
     alphabet = ("A".."Z").to_a
     grid = []
     1.upto(10) { grid << alphabet[rand(26)] }
-    @grid = grid
-    return grid
+    $grid = grid
+    $start_time = Time.now
   end
 
   def score
     @word = params[:word]
-    @grid = game
+    end_time = Time.now
     grid_hash = {}
     @results= {}
     attempt_hash = {}
-    @grid.each do |i|
+    $grid.each do |i|
       x = i.downcase
       add_to_hash(grid_hash, x)
     end
@@ -28,13 +28,13 @@ class PagesController < ApplicationController
         @results[:score] = 0
         @results[:message] = "not in the grid"
         return @results
-        puts 'a'
       end
     end
-    url = "https://wagon-dictionary.herokuapp.com/#{attempt}"
+    url = "https://wagon-dictionary.herokuapp.com/#{@word}"
     result = open(url).read
     result_file = JSON.parse(result)
     if result_file["found"]
+      @results[:score] = (result_file["length"] + 1) / (end_time - $start_time)
       @results[:message] = "well done!"
     else
       results[:score] = 0

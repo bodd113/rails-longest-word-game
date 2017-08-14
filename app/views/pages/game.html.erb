@@ -1,7 +1,7 @@
-<%= @grid %>
-
+<%= $grid %>
+<p><%= $start_time %></p>
 <form action="/pages/score">
   <label for="word">Enter a word</label>
-  <input type="text hidden" id="word" name="word" placeholder="word">
+  <input type="text" id="word" name="word" placeholder="word">
   <input type="submit" value="Submit">
 </form>
